@@ -111,7 +111,7 @@ def  train(**kwargs):
                 raw_img = tv.transforms.ToTensor()(raw_img)
 
                 raw_caption = captions.data[:,0]
-                raw_caption = ''.join([_data['ix2word'][ii] for ii in raw_caption])
+                raw_caption = ''.join([_data['ix2word'][int(ii)] for ii in raw_caption])
                 vis.text(raw_caption,u'raw_caption')
                 vis.img('raw',raw_img,caption=raw_caption)
 

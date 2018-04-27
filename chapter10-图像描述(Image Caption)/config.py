@@ -4,7 +4,7 @@
 class Config:
     caption_data_path='caption.pth'# 经过预处理后的人工描述信息
     # img_path='/home/cy/caption_data/'
-    img_path='./img/'
+    img_path='./ai_challenger_caption_train_20170902/caption_train_images_20170902/'
     img_feature_path = 'results.pth' # 所有图片的features,20w*2048的向量
     scale_size = 300
     img_size = 224
