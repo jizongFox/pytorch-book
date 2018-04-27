@@ -89,7 +89,7 @@ def train(**kwargs):
                 target = target.cuda()
 
             optimizer.zero_grad()
-            score = model(input)
+            score = model(input)  # 这里没有经过softmax的处理的，收敛可能会快一些的
             loss = criterion(score,target)
             loss.backward()
             optimizer.step()
