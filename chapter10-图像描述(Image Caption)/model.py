@@ -53,10 +53,11 @@ class CaptionModel(nn.Module):
                                    length_normalization_factor=length_normalization_factor)
         if next(self.parameters()).is_cuda:
             img = img.cuda()
-        img = t.autograd.Variable(img.unsqueeze(0), volatile=True)
-        img = self.fc(img).unsqueeze(0)
+        with t.no_grad():
+            img = t.autograd.Variable(img.unsqueeze(0))
+            img = self.fc(img).unsqueeze(0)
         sentences, score = cap_gen.beam_search(img)
-        sentences = [' '.join([self.ix2word[idx] for idx in sent])
+        sentences = [' '.join([self.ix2word[int(idx)] for idx in sent])
                      for sent in sentences]
         return sentences
 
@@ -86,7 +87,6 @@ class CaptionModel(nn.Module):
         if load_opt:
             for k, v in data['opt'].items():
                 setattr(self.opt, k, v)
-
         return self
 
     def get_optimizer(self, lr):

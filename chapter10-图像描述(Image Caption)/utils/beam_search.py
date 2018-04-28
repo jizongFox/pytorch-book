@@ -152,7 +152,7 @@ class CaptionGenerator(object):
         def get_topk_words(embeddings, state):
             output, new_states = self.rnn(embeddings, state)
             output = self.classifier(output.squeeze(0))
-            logprobs = log_softmax(output)
+            logprobs = log_softmax(output,dim=1)
             logprobs, words = logprobs.topk(self.beam_size, 1)
             return words.data, logprobs.data, new_states
 
@@ -176,7 +176,8 @@ class CaptionGenerator(object):
                                            for c in partial_captions_list])
             if rnn_input.is_cuda:
                 input_feed = input_feed.cuda()
-            input_feed = Variable(input_feed, volatile=True)
+            with torch.no_grad():
+                input_feed = Variable(input_feed)
             state_feed = [c.state for c in partial_captions_list]
             if isinstance(state_feed[0], tuple):
                 state_feed_h, state_feed_c = zip(*state_feed)

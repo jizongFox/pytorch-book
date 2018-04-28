@@ -22,15 +22,15 @@ def generate(**kwargs):
     data = t.load(opt.caption_data_path,map_location=lambda s,l:s)
     word2ix,ix2word = data['word2ix'],data['ix2word']
 
-    IMAGENET_MEAN =  [0.485, 0.456, 0.406]
+    IMAGENET_MEAN = [0.485, 0.456, 0.406]
     IMAGENET_STD =  [0.229, 0.224, 0.225]
     normalize =  tv.transforms.Normalize(mean=IMAGENET_MEAN,std=IMAGENET_STD)
     transforms = tv.transforms.Compose([
-                tv.transforms.Scale(opt.scale_size),
+                tv.transforms.Resize(opt.scale_size),
                 tv.transforms.CenterCrop(opt.img_size),
                 tv.transforms.ToTensor(),
-                normalize,
-        ])
+                normalize,])
+
     img = Image.open(opt.test_img)
     img = transforms(img).unsqueeze(0)
 
@@ -41,7 +41,8 @@ def generate(**kwargs):
     if opt.use_gpu:
         resnet50.cuda() 
         img = img.cuda()
-    img_feats = resnet50(Variable(img,volatile=True))
+    with t.no_grad():
+        img_feats = resnet50(Variable(img))
 
     # Caption模型
     model = CaptionModel(opt,word2ix,ix2word)
@@ -83,7 +84,6 @@ def  train(**kwargs):
         for ii,(imgs, (captions, lengths),indexes)  in tqdm.tqdm(enumerate(dataloader)):
             # 训练
             optimizer.zero_grad()
-            input_captions = captions[:-1]
             if opt.use_gpu:
                 imgs = imgs.cuda()
                 captions = captions.cuda()
@@ -97,7 +97,8 @@ def  train(**kwargs):
             optimizer.step()
             loss_meter.add(loss.data[0])
 
-            # 可视化
+
+            '''
             if (ii+1)%opt.plot_every ==0:
                 if os.path.exists(opt.debug_file):
                     ipdb.set_trace()
@@ -118,6 +119,7 @@ def  train(**kwargs):
                 # 可视化网络生成的描述语句
                 results = model.generate(imgs.data[0])
                 vis.text('</br>'.join(results),u'caption')
+                '''
         model.save()
 
 if __name__=='__main__':
