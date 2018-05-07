@@ -62,7 +62,6 @@ def create_collate_fn(padding,eos,max_length=50):
 
 
 class CaptionDataset(data.Dataset):
-    
     def __init__(self,opt,transforms=None):
         '''
         Attributes:

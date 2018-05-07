@@ -11,8 +11,8 @@ class Config:
     img_size = 224
     batch_size=8
     shuffle = True
-    num_workers = 12
-    rnn_hidden = 256
+    num_workers = 0
+    rnn_hidden = 111
     embedding_dim = 256
     num_layers = 2
     share_embedding_weights=False
@@ -23,7 +23,8 @@ class Config:
     plot_every = 10
     debug_file = '/tmp/debugc'
 
-    model_ckpt = 'checkpoints/caption_0427_1958' # 模型断点保存路径
+    # model_ckpt = 'checkpoints/caption_0427_1958' # 模型断点保存路径
+    model_ckpt =None
     lr=1e-3
     use_gpu=False
     epoch = 1000

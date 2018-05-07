@@ -80,7 +80,7 @@ def process(**kwargs):
         'id2ix':id2ix,
         'padding':'</PAD>',
         'end':'</EOS>',
-        'readme':readme
+        'readme':readme,
     }
     t.save(results,opt.save_path)
     print('save file in %s' %opt.save_path)

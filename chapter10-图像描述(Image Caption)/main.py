@@ -53,14 +53,13 @@ def generate(**kwargs):
     results = model.generate(img_feats.data[0])
     print('\r\n'.join(results))
 
-
 def  train(**kwargs):
     opt = Config()    
     opt.caption_data_path = 'caption.pth' # 原始数据
     opt.test_img = '' # 输入图片
     #opt.model_ckpt='caption_0914_1947' # 预训练的模型
 
-    # 数据
+    # 数据w
     vis = Visualizer(env = opt.env)
     dataloader = get_dataloader(opt)
     _data = dataloader.dataset._data

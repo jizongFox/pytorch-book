@@ -12,7 +12,7 @@ class CaptionModel(nn.Module):
         self.ix2word = ix2word
         self.word2ix = word2ix
         self.opt = opt
-        self.fc = nn.Linear(2048, opt.rnn_hidden)
+        self.fc = nn.Linear(2048, opt.embedding_dim)
 
         self.rnn = nn.LSTM(opt.embedding_dim, opt.rnn_hidden, num_layers=opt.num_layers)
         self.classifier = nn.Linear(opt.rnn_hidden, len(word2ix))
